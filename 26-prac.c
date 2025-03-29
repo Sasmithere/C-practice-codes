@@ -151,11 +151,11 @@ int numberOfPrimeFactors(int n)
   ***
  *****
 */
-/*int main(){
+int main(){
   int n=10;
   for(int i=0;i<=n;i++){
     for(int j=n;j>i;j--){
-      if(i==j){
+      if(i>=j){
         printf("*");
       }
       else{
@@ -165,7 +165,7 @@ int numberOfPrimeFactors(int n)
     printf("\n");
   }
 }
-*/
+
 /*int main(){
   int a;
   float b;

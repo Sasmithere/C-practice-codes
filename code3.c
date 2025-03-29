@@ -1,40 +1,31 @@
-/*Best time to sell a commodity: 
-Given an array of positive integers that represent the 
-price of a commodity on a given day, return two 
-integers which represent the best day to buy and later, sell the commodity. 
-*/
+#include "stdio.h"
 
-#include <stdio.h>
-#include <limits.h>
+int findPeakElement(int nums[], int n) {
+  int left = 0;
+  int right = n - 1;
 
-void bestTimeToBuySell(int prices[], int size, int *buyDay, int *sellDay) {
-	int minPrice = INT_MAX;
-	int maxProfit = 0;
-	int minDay = 0;
+  while (left < right) {
+    int mid = left + (right - left) / 2;
+    if (nums[mid] > nums[mid + 1]) {
+      right = mid;
+    } else {
+      left = mid + 1;
+    }
+  }
 
-	for (int i = 0; i < size; i++) {
-		if (prices[i] < minPrice) {
-			minPrice = prices[i];
-			minDay = i;
-		}
-		int profit = prices[i] - minPrice;
-		if (profit > maxProfit) {
-			maxProfit = profit;
-			*buyDay = minDay;
-			*sellDay = i;
-		}
-	}
+  return left;
+}
+
+void PrintArray(int nums[], int n) {
+  for (int i = 0; i < n; i++) {
+    printf("%d ", nums[i]);
+  }
 }
 
 int main() {
-	int prices[] = {7, 1, 5, 3, 6, 4};
-	int size = sizeof(prices) / sizeof(prices[0]);
-	int buyDay = 0, sellDay = 0;
-
-	bestTimeToBuySell(prices, size, &buyDay, &sellDay);
-
-	printf("Best day to buy: %d\n", buyDay);
-	printf("Best day to sell: %d\n", sellDay);
-
-	return 0;
+  int nums[] = {1, 2, 3, 1};
+  printf("Given array: ");
+  PrintArray(nums, 4);
+  printf("\n");
+  printf("The peak element is : %d\n", findPeakElement(nums, 4));
 }

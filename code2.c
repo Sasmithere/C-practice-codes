@@ -1,38 +1,76 @@
-/*Remove duplicates from a given array: Given a sorted integer array arr, 
-write a program in C to return the array after removing the duplicates, with all the other 
-elements in place.*/
 #include <stdio.h>
+#include <stdlib.h>
 
-int removeDuplicates(int arr[], int size) {
-	if (size == 0 || size == 1) {
-		return size;
-	}
+void merge(int arr[], int l, int m, int r) {
+	int i, j, k;
+	int n1 = m - l + 1;
+	int n2 = r - m;
 
-	int j = 0; // Index of the next unique element
+	int* L = (int*)malloc(n1 * sizeof(int));
+	int* R = (int*)malloc(n2 * sizeof(int));
 
-	for (int i = 0; i < size - 1; i++) {
-		if (arr[i] != arr[i + 1]) {
-			arr[j++] = arr[i];
+	for (i = 0; i < n1; i++)
+		L[i] = arr[l + i];
+	for (j = 0; j < n2; j++)
+		R[j] = arr[m + 1 + j];
+
+	i = 0;
+	j = 0;
+	k = l;
+	while (i < n1 && j < n2) {
+		if (L[i] <= R[j]) {
+			arr[k] = L[i];
+			i++;
+		} else {
+			arr[k] = R[j];
+			j++;
 		}
+		k++;
 	}
 
-	arr[j++] = arr[size - 1]; // Add the last element
+	while (i < n1) {
+		arr[k] = L[i];
+		i++;
+		k++;
+	}
 
-	return j;
+	while (j < n2) {
+		arr[k] = R[j];
+		j++;
+		k++;
+	}
+
+	free(L);
+	free(R);
+}
+
+void mergeSort(int arr[], int l, int r) {
+	if (l < r) {
+		int m = l + (r - l) / 2;
+
+		mergeSort(arr, l, m);
+		mergeSort(arr, m + 1, r);
+
+		merge(arr, l, m, r);
+	}
+}
+
+void printArray(int arr[], int size) {
+	for (int i = 0; i < size; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
 }
 
 int main() {
-	int arr[] = {1, 2, 2, 3, 4, 4, 5};
-	//int size = sizeof(arr) / sizeof(arr[0]);
-	int size = 7;
+	int arr[] = {12, 11, 13, 5, 6, 7};
+	int arr_size = sizeof(arr) / sizeof(arr[0]);
 
-	size = removeDuplicates(arr, size);
+	printf("Given array: ");
+	printArray(arr, arr_size);
 
-	printf("Array after removing duplicates: ");
-	for (int i = 0; i < size; i++) {
-		printf("%d ", arr[i]);
-	}
-	printf("\n");
+	mergeSort(arr, 0, arr_size - 1);
 
+	printf("Sorted array: ");
+	printArray(arr, arr_size);
 	return 0;
 }
